@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vale Alto Shop — Direto da Fábrica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2149605386435935');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2149605386435935&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <script>
+  (function () {
+    function uuid() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0;
+        var v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return match ? decodeURIComponent(match[1]) : '';
+    }
+
+    function sendCapi(eventName, eventId) {
+      var payload = {
+        event_name: eventName,
+        event_id: eventId,
+        event_source_url: window.location.href,
+        fbp: getCookie('_fbp'),
+        fbc: getCookie('_fbc')
+      };
+      return fetch('/api/capi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(function () {});
+    }
+
+    function track(eventName, params) {
+      var eventId = uuid();
+      if (typeof fbq === 'function') {
+        fbq('track', eventName, params || {}, { eventID: eventId });
+      }
+      sendCapi(eventName, eventId);
+      return eventId;
+    }
+
+    window.valeAltoTrack = track;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { track('PageView'); });
+    } else {
+      track('PageView');
+    }
+  })();
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0A0A0A;
+      --dark: #111111;
+      --red: #C0261B;
+      --red-bright: #E02D1B;
+      --white: #FFFFFF;
+      --gray: #888888;
+      --light: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      position: relative;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(192,38,27,.08) 0%, transparent 70%),
+        var(--black);
+    }
+
+    /* subtle top/bottom red lines */
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 2px;
+      background: var(--red);
+    }
+    .hero::before { top: 0; }
+    .hero::after { bottom: 0; }
+
+    /* ── LOGO ── */
+    .logo-wrap {
+      margin-bottom: 36px;
+    }
+    .logo-wrap img {
+      width: 200px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 40px rgba(192,38,27,.25));
+    }
+
+    /* ── TAG ── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--light);
+      margin-bottom: 24px;
+      padding: 6px 16px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 100px;
+    }
+    .tag span {
+      font-size: 16px;
+    }
+
+    /* ── HEADLINE ── */
+    .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: .02em;
+      color: var(--white);
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    .headline em {
+      font-style: normal;
+      color: var(--red-bright);
+    }
+
+    /* ── SUB ── */
+    .subheadline {
+      font-size: clamp(.95rem, 2.2vw, 1.1rem);
+      font-weight: 400;
+      color: var(--gray);
+      max-width: 440px;
+      line-height: 1.5;
+      margin-bottom: 36px;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-decoration: none;
+      padding: 16px 40px;
+      border-radius: 6px;
+      transition: background .2s, transform .15s;
+      box-shadow:
+        0 4px 24px rgba(192,38,27,.35),
+        0 0 0 1px rgba(255,255,255,.06);
+    }
+    .cta:hover {
+      background: var(--red-bright);
+      transform: translateY(-2px);
+    }
+    .cta:active {
+      transform: translateY(0);
+    }
+    .cta svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* pulse ring */
+    .cta-wrap {
+      position: relative;
+      margin-bottom: 48px;
+    }
+    .cta-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 10px;
+      border: 2px solid var(--red);
+      opacity: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0; transform: scale(1); }
+      50% { opacity: .4; transform: scale(1.04); }
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      color: var(--red-bright);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray);
+      margin-top: 4px;
+      letter-spacing: .03em;
+    }
+
+    /* ── DIVIDER BETWEEN STATS ── */
+    .stat + .stat {
+      position: relative;
+      padding-left: 40px;
+    }
+    .stat + .stat::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,.1);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .logo-wrap img { width: 160px; }
+      .stats { gap: 24px; }
+      .stat + .stat { padding-left: 24px; }
+      .cta { padding: 14px 28px; font-size: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cta-wrap::after { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+
+    <div class="logo-wrap">
+      <img src="logo-vale-alto.png" alt="Vale Alto Shop">
+    </div>
+
+    <div class="tag">
+      <span>🇧🇷</span> Atacado para todo o Brasil
+    </div>
+
+    <h1 class="headline">
+      Compre já direto da fábrica com <em>melhor preço e qualidade</em> do mercado!
+    </h1>
+
+    <p class="subheadline">
+      Clique no botão abaixo e entre já em contato
+    </p>
+
+    <div class="cta-wrap">
+      <a href="https://wa.me/5547989010946?text=Ol%C3%A1%2C%20quero%20comprar%20em%20atacado!" class="cta" id="cta-catalogo" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 01-4.106-1.138l-.294-.176-2.6.774.774-2.6-.176-.294A7.96 7.96 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>
+        SOLICITAR CATÁLOGO!
+      </a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Peças mínimo de início</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Atacado para lojistas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">🇧🇷</div>
+        <div class="stat-label">Entrega para todo Brasil</div>
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+  document.getElementById('cta-catalogo').addEventListener('click', function () {
+    if (typeof window.valeAltoTrack === 'function') {
+      window.valeAltoTrack('Lead');
+    }
+  });
+  </script>
+
+</body>
+</html>
