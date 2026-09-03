@@ -141,7 +141,7 @@ def main() -> None:
     if not ACCESS_TOKEN:
         raise SystemExit("Configure META_ACCESS_TOKEN no arquivo .env")
     server = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
-    print(f"Vale Alto Shop em http://localhost:{PORT}/vale_alto_shop.html")
+    print(f"Vale Alto Shop em http://localhost:{PORT}/")
     print(f"CAPI ativo -> pixel {PIXEL_ID}")
     try:
         server.serve_forever()
