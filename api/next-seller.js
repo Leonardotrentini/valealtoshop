@@ -2,7 +2,10 @@ const FALLBACK_SELLERS = [
   { label: 'alexandre', phone: '5547989010946' },
 ];
 
-const CLEAN_MESSAGE = 'Olá, quero comprar em atacado!';
+const MESSAGES = {
+  default: 'Olá, quero comprar em atacado!',
+  fretegratis: 'Vim pela oferta do frete grátis',
+};
 const VESTO_KEY = process.env.VESTO_PUBLIC_KEY || 'vpk_55fa13caded89a4138a54c2e5a26781e';
 const VESTO_CONFIG_URL =
   process.env.VESTO_CONFIG_URL ||
@@ -80,6 +83,13 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
+  const offerRaw =
+    (typeof req.query?.offer === 'string' && req.query.offer) ||
+    (typeof req.url === 'string' && new URL(req.url, 'http://localhost').searchParams.get('offer')) ||
+    '';
+  const offer = String(offerRaw).toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  const message = MESSAGES[offer] || MESSAGES.default;
+
   try {
     const sellers = await loadSellers();
     const { seq, store } = await incrGlobalSeq();
@@ -93,7 +103,8 @@ module.exports = async function handler(req, res) {
       index,
       total: sellers.length,
       seq,
-      message: CLEAN_MESSAGE,
+      offer: offer || 'default',
+      message,
       store,
     });
   } catch (err) {
@@ -105,7 +116,8 @@ module.exports = async function handler(req, res) {
       index: 0,
       total: FALLBACK_SELLERS.length,
       seq: 0,
-      message: CLEAN_MESSAGE,
+      offer: offer || 'default',
+      message,
       store: 'fallback',
       error: err.message || 'next_seller_error',
     });

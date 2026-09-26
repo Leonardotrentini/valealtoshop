@@ -6,7 +6,22 @@
   var NEXT_SELLER_URL = '/api/next-seller';
   var FALLBACK_MSG = 'Olá, quero comprar em atacado!';
   var FALLBACK_PHONE = '5547989010946';
+  var OFFER_MESSAGES = {
+    fretegratis: 'Vim pela oferta do frete grátis',
+  };
   var busy = false;
+
+  function detectOffer() {
+    var path = (location.pathname || '').toLowerCase();
+    if (path.indexOf('/fretegratis') !== -1) return 'fretegratis';
+    var bodyOffer = document.body && document.body.getAttribute('data-offer');
+    if (bodyOffer) return String(bodyOffer).toLowerCase();
+    return '';
+  }
+
+  function messageForOffer(offer) {
+    return OFFER_MESSAGES[offer] || FALLBACK_MSG;
+  }
 
   function buildRef() {
     var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -77,8 +92,10 @@
       });
   }
 
-  function nextSeller() {
-    return fetch(NEXT_SELLER_URL, {
+  function nextSeller(offer) {
+    var url = NEXT_SELLER_URL;
+    if (offer) url += '?offer=' + encodeURIComponent(offer);
+    return fetch(url, {
       method: 'GET',
       cache: 'no-store',
       credentials: 'omit',
@@ -112,6 +129,9 @@
 
       busy = true;
 
+      var offer = detectOffer();
+      var fallbackMsg = messageForOffer(offer);
+
       var meta = readMeta();
       meta.clickAt = Date.now();
       meta.pageUrl = location.href;
@@ -136,15 +156,15 @@
         wait(2500),
       ]);
 
-      Promise.all([nextSeller().catch(function () { return null; }), attributionWait])
+      Promise.all([nextSeller(offer).catch(function () { return null; }), attributionWait])
         .then(function (results) {
           var seller = results[0] || {};
           var phone = seller.phone ? String(seller.phone) : FALLBACK_PHONE;
-          openWhatsApp(phone, seller.message || FALLBACK_MSG);
+          openWhatsApp(phone, seller.message || fallbackMsg);
         })
         .catch(function (err) {
           console.error('[Vesto] Não foi possível obter o próximo vendedor.', err);
-          openWhatsApp(FALLBACK_PHONE, FALLBACK_MSG);
+          openWhatsApp(FALLBACK_PHONE, fallbackMsg);
         })
         .finally(function () {
           busy = false;
