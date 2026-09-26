@@ -1,7 +1,8 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/vale_alto_shop.html", "destination": "/index.html" }
+    { "source": "/vale_alto_shop.html", "destination": "/index.html" },
+    { "source": "/fretegratis", "destination": "/fretegratis/index.html" }
   ],
   "headers": [
     {
@@ -42,6 +43,12 @@
     },
     {
       "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/fretegratis",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
